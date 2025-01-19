@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css2?family=Nerko+One&display=swap");
+
+.forgot {
+    font-family: "Nerko One";
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 100vh;
+    padding: 0;
+    margin: auto;    
+}
+
+.label {
+    position: relative;
+    flex-direction: column;
+}
+
+.forgot-back {
+    background-image: url('/public/forgot.jpg');
+    background-position: center;
+    background-size: cover;
+    border-radius: 5px;
+    padding: 30px;
+    text-align: center;
+    justify-content: center;
+    width: 500px;
+    height: 200px;
+    align-items: center;
+}
+
+.back-img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.opt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+select[name="otp"] {
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.num, .em {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#phone-input, 
+#email-input {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#forgot-number {
+    margin-top: 5px;
+    padding: 7px;
+    border-radius: 5px;
+    border: none;
+}
+
+#forgot-number:focus {
+    border: 0.5px solid rgb(50, 132, 199);
+    outline: none;
+}
+
+#forgot-email {
+    margin-top: 5px;
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+}
+
+#forgot-email:focus {
+    border: 0.5px solid rgb(50, 132, 199);
+    outline: none;
+}
+
+#for-submit {
+    padding: 10px;
+    color: white;
+    background-color: rgb(132, 199, 243);
+    border-radius: 5px;
+    border: none;
+}
+
+#for-submit:hover {
+    background-color: rgb(116, 186, 243);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+#forgot-otp {
+    margin-right: 5px;
+    border: 0.5px solid rgb(50, 132, 199);
+}
+
+#forgot-otp:focus {
+    border: 0.5px solid rgb(50, 132, 199);
+    outline: none;
+}

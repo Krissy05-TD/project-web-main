@@ -1,0 +1,205 @@
+/* Adjusted CSS for .login to apply to the entire container */
+.login {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+#login-form {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    padding: 50px;
+    padding-bottom: 20px;
+    margin: 30px;
+    text-align: center;
+    background-color: rgba(180, 159, 191, 0.872);
+    border-radius: 5px;
+    width: 300px;
+}
+
+.login-left {
+    background-image: url('/public/loggin.jpg');
+    background-position: center;
+    background-size: cover;
+    justify-content: center;
+    display: flex;
+    position: relative;
+    width: 430px;
+    height: 100vh;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.login-left h1 {
+    font-family: "Nerko One";
+    text-wrap: nowrap;
+    align-self: center;
+    padding: 10px;
+    margin-bottom: 403px;
+    margin-left: 30px;
+    margin-right: 30px;
+    background-color: rgba(180, 161, 206, 0.5);
+    border: 7px solid rgba(124, 94, 148, 0.2);
+    border-style:ridge;
+    color:white;
+    font-size: 70px;
+    display: flex;
+}
+
+.login-left img {
+    align-self: center;
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
+
+.label {
+    margin: 10px;
+    text-align: center;
+    justify-content: center;
+}
+
+.one {
+    margin-bottom: 20px;
+}
+
+.two {
+    display: flex;
+    flex-direction: column;
+}
+
+#login-img {
+    position: relative;
+    right: 25px;
+    cursor: pointer;
+    top: 6px;
+    width: 18px;
+    height: 18px;
+}
+
+#user,
+#log-pass {
+    border-radius: 5px;
+    padding: 7px;
+    width: 200px;
+    font-size: 13px;
+    align-self: center;
+    border: none;
+}
+
+#user:focus,
+#log-pass:focus {
+    border: 0.5px solid rgba(160, 105, 197, 0.872);
+    outline: none;
+}
+
+#log-pass {
+    margin-left: 20px;
+}
+
+.login-right {
+    float: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+}
+
+.user,
+.pass-bel {
+    font-family: Arial, Helvetica, sans-serif;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    font-size: 14px;
+}
+
+#log-pass, #username {
+    position: relative;
+    flex-direction: column;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+}
+
+#login-submitButton {
+    padding: 10px;
+    margin-left: 30px;
+    width: 50px;
+    font-size: 13px;
+    color: white;
+    text-wrap: nowrap;
+    background-color: rgba(195, 154, 223, 0.872);
+    border-radius: 5px;
+    border-color: none;
+    border-style: none;
+}
+
+#login-submitButton:hover {
+    background-color: rgba(160, 105, 197, 0.872);
+    box-shadow: 0 2px 5px rgba(0, 0, 0 ,0.2);
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.notification.hidden {
+    display: none;
+}
+
+.forgot-password {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: rgb(83, 108, 177);
+    text-decoration: none;
+    display: flex;
+    margin-left: 5px;
+}
+
+.forgot-password:hover {
+    color: rgb(53, 59, 153);
+    transition: background-color 0.3s ease;
+}
+
+.login-link {
+    margin-left: 30px;
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-a {
+    color: rgb(214, 151, 216);
+    font-size: 13px;
+    margin-left: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+}
+
+.login-a:hover {
+    color: rgb(158, 103, 160);
+    text-decoration: underline;
+}
+
+.log-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.log-container img {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    top: 10px;
+    width: 18px;
+    height: 18px;
+}
+
+.l-checkbox {
+    margin-right: 120px;
+    font-size: 12px;
+    text-align: center;
+    margin-bottom: 35px;
+}

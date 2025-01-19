@@ -1,0 +1,149 @@
+@import url("https://fonts.googleapis.com/css2?family=Nerko+One&display=swap");
+
+.wel-h1 {
+    font-family: "Nerko One";
+    background-color: rgba(175, 214, 240, 0.281);
+    display: flex;
+    position: relative;
+    text-align: center;
+    margin-bottom: 20px;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.star {
+    width: 20px;
+    height: 20px;
+}
+
+.welcome {
+    text-align: center;
+    background-image: url('/public/background.jpg');
+    background-position: center;
+    background-repeat: repeat;
+    background-size: contain;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* The Rest */
+.form button{
+    color: white;
+    background-color: rgb(174, 214, 179);
+    padding: 10px;
+    margin-left: 4px;
+    border: none;
+    border-radius: 5px;
+}
+
+.form button:hover{
+    background-color: rgb(159, 185, 162);
+    box-shadow: 0 2px 2px rgba(0, 0, 0 ,0.2);
+    transition: background-color 0.3s ease;
+}
+
+#wel-mit {
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: rgb(132, 199, 243);
+    border-radius: 5px;
+    border-color: none;
+    border-style: none;
+    cursor: pointer;
+    margin-top: 30px;
+    float: left;
+    margin-left: 80px;
+}
+
+#wel-mit:hover {
+    background-color: rgb(116, 186, 243);
+    box-shadow: 0 2px 5px rgba(0, 0, 0 ,0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Hamburger Menu Styles */
+.hamburger-icon {
+    width: 30px;
+    height: 20px;
+    margin-left: 30px;
+    top: 30px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    z-index: 20; /* Ensure it stays above other elements */
+}
+
+.hamburger-icon span {
+    display: block;
+    height: 4px;
+    width: 100%;
+    background-color: #333;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Transform hamburger into X */
+.hamburger-icon.active span:nth-child(1) {
+    transform: rotate(45deg);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    background-color: #000;
+}
+
+.hamburger-icon.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-icon.active span:nth-child(3) {
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    background-color: #000;
+}
+
+/* Menu Links */
+.menu-links {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0; /* Ensure it covers the entire screen */
+    width: 250px; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    background-color: rgba(174, 214, 179, 0.95); /* Slightly transparent background */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    list-style: none;
+    transition: transform 0.3s ease;
+    transform: translateX(100%);
+    z-index: 15; /* Place above the banner and other content */
+}
+
+.menu-links.active {
+    display: block;
+    transform: translateX(0);
+}
+
+.menu-links li {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.menu-links a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.menu-links a:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
