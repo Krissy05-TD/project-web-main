@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { firestore } from "../firebase";
 import { setDoc, doc } from "@firebase/firestore"; // Use setDoc to overwrite the document with email as ID
-import axios from 'axios';
+import axios from "axios";
 import "./style/create.css";
 
 export default function Create() {
@@ -12,11 +12,15 @@ export default function Create() {
   const passwordRef = useRef();
   const sendOtpNumberRef = useRef();
   const sendOtpEmailRef = useRef();
-  const [message, setMessage] = useState('');
+  const [method] = useState('');
+  const [destination] = useState('');
+  const [message, setMessage] = useState("");
   const [number, setNumber] = useState("");
   const [status, setStatus] = useState("");
   const [firstname, setFirstName] = useState("");
   const [otp, setOtp] = useState(""); // New state for OTP
+  // const nodemailer = require("nodemailer");
+  // const twilio = require('twilio');
 
   // States to manage visibility of passwords
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -24,31 +28,73 @@ export default function Create() {
 
   // useEffect to load stored name from localStorage
   useEffect(() => {
-    const storedName = localStorage.getItem('userName');
+    const storedName = localStorage.getItem("userName");
     if (storedName) {
       setFirstName(storedName);
-    } 
-    fetch('http://localhost:5000/api/message')
-            .then((response) => response.json())
-            .then((data) => setMessage(data.message))
-            .catch((error) => console.error('Error fetching data:', error));
-            axios.get('http://localhost:5000/api/message')
-            .then((response) => setMessage(response.data.message))
-            .catch((error) => console.error('Error fetching data:', error));
+    }
+    fetch("http://localhost:5000/api/message")
+      .then((response) => response.json())
+      .then((data) => setMessage(data.message))
+      .catch((error) => console.error("Error fetching data:", error));
+    axios
+      .get("http://localhost:5000/api/message")
+      .then((response) => setMessage(response.data.message))
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
+  // const sendOtpEmail = (email, otp) => {
+  //   const transporter = nodemailer.createTransport({
+  //     service: "gmail",
+  //     auth: {
+  //       user: "your-email@gmail.com",
+  //       pass: "your-email-password", // You should use environment variables for this
+  //     },
+  //   });
+
+  //   const mailOptions = {
+  //     from: "your-email@gmail.com",
+  //     to: email,
+  //     subject: "Your OTP Code",
+  //     text: `Your OTP code is: ${otp}`,
+  //   };
+
+  //   transporter.sendMail(mailOptions, (error, info) => {
+  //     if (error) {
+  //       console.log("Error sending email:", error);
+  //     } else {
+  //       console.log("Email sent: " + info.response);
+  //     }
+  //   });
+  // };
+
+  // const sendOtpSMS = (phoneNumber, otp) => {
+  //   const client = twilio('your-twilio-account-sid', 'your-twilio-auth-token');
+
+  //   client.messages
+  //     .create({
+  //       body: `Your OTP code is: ${otp}`,
+  //       from: '+1XXXXXXXXXX',  // Your Twilio phone number
+  //       to: phoneNumber,
+  //     })
+  //     .then((message) => console.log('SMS sent: ' + message.sid))
+  //     .catch((error) => console.log('Error sending SMS:', error));
+  // };
+
   const sendData = () => {
-    fetch('http://localhost:5000/api/data', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: 'John Doe' }),
+    fetch("http://localhost:5000/api/data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: firstnameRef.current?.value || "No name provided",
+      }),
     })
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => console.error('Error:', error));
-};
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error("Error:", error));
+    console.log(firstnameRef.current.value);
+  };
 
   const handleCheckboxChange = (type) => {
     if (type === "number") {
@@ -66,20 +112,28 @@ export default function Create() {
     const generateOtp = () => {
       return Math.floor(100000 + Math.random() * 900000).toString(); // Generates a 6-digit OTP
     };
-  
+
     const otp = generateOtp();
     setOtp(otp); // Set OTP in state to display on the page
     setStatus(`Generated OTP: ${otp}`);
-  
+
     if (sendOtpNumberRef.current.checked || sendOtpEmailRef.current.checked) {
       const otpMethod = sendOtpNumberRef.current.checked ? "number" : "email";
       const destination = sendOtpNumberRef.current.checked
         ? number.replace(/\s/g, "")
         : emailRef.current.value;
-  
+
       try {
+        const response = await fetch('http://localhost:5000/api/send-otp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ method, destination, otp }),
+        });
         console.log(`Sending OTP to ${otpMethod}:`, destination);
-  
+
+        
         // Save OTP to Firestore
         await setDoc(doc(firestore, "otps", destination), {
           method: otpMethod,
@@ -87,17 +141,20 @@ export default function Create() {
           otp,
           createdAt: new Date(),
         });
-  
+
         // Save OTP in localStorage
         localStorage.setItem("generatedOtp", otp);
         setStatus(`OTP sent successfully via ${otpMethod}.`);
-        
+
         console.log(`Generated OTP: ${otp}`);
-  
+
         // Add a small delay before redirecting to OTP page
         setTimeout(() => {
           window.location.href = "/otp"; // Redirect after showing OTP
         }, 2000); // 2-second delay for the user to see the OTP
+        const data = await response.json();
+        console.log(data.message);
+        setStatus(data.message);
       } catch (error) {
         console.error("Error sending OTP:", error.message);
         setStatus(`Failed to send OTP via ${otpMethod}`);
@@ -106,7 +163,38 @@ export default function Create() {
       setStatus("Please select a method to send the OTP.");
     }
   };
-  
+
+  const handleNotification = () => {
+    if (sendOtpNumberRef.current.checked || sendOtpEmailRef.current.checked) {
+      const method = sendOtpNumberRef.current.checked ? "number" : "email";
+      const destination = sendOtpNumberRef.current.checked
+        ? number.replace(/\s/g, "")
+        : emailRef.current.value;
+
+      console.log("Sending notification:", {
+        method: sendOtpNumberRef.current.checked ? "number" : "email",
+        destination: sendOtpNumberRef.current.checked
+          ? number.replace(/\s/g, "")
+          : emailRef.current.value,
+      });
+
+      axios
+        .post("http://localhost:5000/api/notify", {
+          method,
+          destination,
+          otp,
+        })
+        .then((response) => {
+          alert(`${response.data.message}`);
+        })
+        .catch((error) => {
+          console.error("Error sending Verification Code:", error);
+          alert("Failed to send Verification Code.");
+        });
+    } else {
+      alert("Please select a method to send the Verification Code.");
+    }
+  };
 
   const handleNumberChange = (e) => {
     let input = e.target.value;
@@ -116,7 +204,8 @@ export default function Create() {
     if (input.length > 3 && input.length <= 6) {
       input = input.slice(0, 3) + " " + input.slice(3);
     } else if (input.length > 6) {
-      input = input.slice(0, 3) + " " + input.slice(3, 6) + " " + input.slice(6, 10);
+      input =
+        input.slice(0, 3) + " " + input.slice(3, 6) + " " + input.slice(6, 10);
     }
 
     setNumber(input);
@@ -147,13 +236,21 @@ export default function Create() {
     };
 
     // Validations
-    if (!data.firstname || !data.lastname || !data.number || !data.email || !data.password) {
+    if (
+      !data.firstname ||
+      !data.lastname ||
+      !data.number ||
+      !data.email ||
+      !data.password
+    ) {
       alert("All fields are required.");
       return;
     }
 
     if (!/^\d{10}$/.test(data.number)) {
-      alert("Invalid phone number format. Please enter a valid 10-digit number.");
+      alert(
+        "Invalid phone number format. Please enter a valid 10-digit number."
+      );
       return;
     }
 
@@ -187,10 +284,25 @@ export default function Create() {
 
       // Send OTP
       await handleSendOtp();
-
     } catch (error) {
       console.error("Error saving data to Firestore:", error.message);
       alert("An error occurred while saving data. Please try again.");
+    }
+
+    try {
+      // Send data to your server
+      const response = await fetch("http://localhost:5000/api/data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({method, destination, otp}),
+      });
+
+      const result = await response.json();
+      console.log("Server response:", result);
+      alert(result.message);
+    } catch (error) {
+      console.error("Error sending data to the server:", error);
+      alert("An error occurred while saving data.");
     }
   };
 
@@ -343,22 +455,35 @@ export default function Create() {
                   className="facebook-icon"
                   src="/facebook.png"
                   alt="Facebook"
-                  onClick={() => (window.location.href = "https://facebook.com/")}
+                  onClick={() =>
+                    (window.location.href = "https://facebook.com/")
+                  }
                 />
                 <img
                   className="apple-icon"
                   src="/apple.png"
                   alt="Apple"
-                  onClick={() => (window.location.href = "https://appleid.apple.com/")}
+                  onClick={() =>
+                    (window.location.href = "https://appleid.apple.com/")
+                  }
                 />
               </div>
             </div>
             <p className="message">{message}</p>
           </form>
-          <button type="button" id="cre-button" onClick={handleSendOtp, handleSave}>
+          <button
+            type="button"
+            id="cre-button"
+            onClick={handleSendOtp}>
             Send Verification Code
           </button>
-          <div style={{ marginTop: status ? "0px" : "0", marginLeft: status ? "30px" : "0", color: "rgb(236, 107, 129)" }}>
+          <div
+            style={{
+              marginTop: status ? "0px" : "0",
+              marginLeft: status ? "30px" : "0",
+              color: "rgb(236, 107, 129)",
+            }}
+          >
             {status && <p>{status}</p>}
           </div>
           <p className="create-p">

@@ -123,8 +123,8 @@
 }
 
 .new-password-container img {
-    position: relative;
-    left: 25%;
+    position: absolute;
+    left: 40%;
     bottom: 25px;
 }
 

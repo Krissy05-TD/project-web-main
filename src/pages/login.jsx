@@ -59,7 +59,7 @@ export default function Login() {
       localStorage.setItem("email", userData.email); // Assuming email is the username
 
       console.log("Login successful for:", userData.firstname);
-      window.location.href = "/welcomes"; // Redirect to the welcome page
+      window.location.href = "/welcome"; // Redirect to the welcome page
     } catch (e) {
       console.error("Error during login:", e);
       alert("An error occurred. Please try again.");
@@ -104,7 +104,6 @@ export default function Login() {
                 id="log-pass"
                 placeholder="Enter Password"
                 value={password}
-                autoComplete="off"
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength="8"

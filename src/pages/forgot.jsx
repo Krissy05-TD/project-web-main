@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { firestore } from '../firebase'; // Ensure you have Firebase set up
-import { getFirestore, setDoc, doc, updateDoc } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { getDoc, collection } from '@firebase/firestore';
 import './style/forgot.css'; // Assuming you have the CSS file for styling
@@ -19,27 +19,26 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export default function Forgot() {
-  const [firstname, setFirstName] = useState('');
+  const [ setFirstName] = useState('');
   const [otpMethod, setOtpMethod] = useState('');
   const [number, setNumber] = useState('');
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [newPassword] = useState('');
 
   const ref = collection(firestore, 'login'); // Reference to 'users' collection in Firestore
 
-  useEffect(() => {
-    const storedEmail = localStorage.getItem('email'); // Retrieve email from localStorage
-    if (storedEmail) {
-        setEmail(storedEmail);
-        fetchUserName(storedEmail); // Fetch firstname using the email
-    }    
-    const storedNumber = localStorage.getItem('number'); // Retrieve email from localStorage
-    if (storedNumber) {
-        setNumber(storedNumber);
-        fetchUserName(storedNumber); // Fetch firstname using the email
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedEmail = localStorage.getItem('email'); // Retrieve email from localStorage
+  //   if (storedEmail) {
+  //       setEmail(storedEmail);
+  //       fetchUserName(storedEmail); // Fetch firstname using the email
+  //   }    
+  //   const storedNumber = localStorage.getItem('number'); // Retrieve email from localStorage
+  //   if (storedNumber) {
+  //       setNumber(storedNumber);
+  //   }
+  // }, []);
 
   const fetchUserName = async (identifier) => {
     try {
@@ -48,8 +47,6 @@ export default function Forgot() {
 
       if (isEmail) {
         docRef = doc(db, 'users', identifier); // If email, query by email
-      } else {
-        docRef = doc(db, 'users', identifier); // If phone number, query by phone number
       }
 
       const docSnap = await getDoc(docRef);
@@ -87,20 +84,16 @@ export default function Forgot() {
 
   const generateAndSendOTP = async (otp, method) => {
     try {
-      const userId = method === "email" ? email : number;
-      const otpDocRef = doc(db, "otps", userId);
+      // Save OTP in localStorage
+      localStorage.setItem('generatedOtp', otp);
+      localStorage.setItem('otpMethod', method);
   
-      await setDoc(otpDocRef, {
-        otp,
-        method,
-        createdAt: new Date(),
-      });
-  
-      alert("OTP sent successfully!");
-      window.location.href = "/newotp"; // Redirect to OTP verification
+      // Simulate sending OTP (you can integrate actual OTP sending logic here)
+      alert('OTP sent successfully!');
+      window.location.href = '/newotp'; // Redirect to OTP verification page
     } catch (error) {
-      console.error("Error saving OTP:", error);
-      setErrorMessage("Error generating OTP.");
+      console.error('Error generating OTP:', error);
+      setErrorMessage('Error generating OTP.');
     }
   };
 
@@ -161,7 +154,7 @@ export default function Forgot() {
               alt="back arrow icon"
               className="icon arrow"
               style={{ width: '20px', height: '20px' }}
-              onClick={() => window.location.href = '/loginN'} // Redirect to previous page
+              onClick={() => window.location.href = '/login'} // Redirect to previous page
             />
           </div>
           <div className='opt'>

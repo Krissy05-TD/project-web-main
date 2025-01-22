@@ -41,7 +41,7 @@ export default function NewOTP() {
       setTimeout(() => {
         setLoading(false);
         alert("OTP verified successfully!");
-        window.location.href = "/new"; // Navigate to the welcome page after verification
+        window.location.href = '/new'; // Navigate to the welcome page after verification
       }, 2000); // Spinner shows for 2 seconds
     } else {
       setTimeout(() => {
